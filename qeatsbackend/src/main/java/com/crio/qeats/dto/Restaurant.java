@@ -8,6 +8,8 @@
 package com.crio.qeats.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mongodb.lang.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -15,7 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// TODO: CRIO_TASK_MODULE_SERIALIZATION
+//  CRIO_TASK_MODULE_SERIALIZATION
 //  Implement Restaurant class.
 // Complete the class such that it produces the following JSON during serialization.
 // {
@@ -33,7 +35,38 @@ import lombok.NoArgsConstructor;
 //  ]
 // }
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Restaurant {
+    
+    @NonNull
+    private String restaurantId;
+
+    @NonNull
+    private String name;
+
+    @NonNull
+    private String city;
+
+    @NonNull
+    private String imageUrl;
+
+    @NonNull
+    private double latitude;
+
+    @NonNull
+    private double longitude;
+
+    @NonNull
+    private String opensAt;
+
+    @NonNull
+    private String closesAt;
+
+    @NonNull
+    private String[] attributes;
 
 }
 
