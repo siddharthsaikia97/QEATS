@@ -68,5 +68,17 @@ public class Restaurant {
     @NonNull
     private String[] attributes;
 
+    public Object getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
 }
 
