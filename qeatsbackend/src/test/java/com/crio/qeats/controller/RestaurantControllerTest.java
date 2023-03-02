@@ -60,7 +60,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.UriComponentsBuilder;
 
-// TODO: CRIO_TASK_MODULE_RESTAURANTSAPI
+// : CRIO_TASK_MODULE_RESTAURANTSAPI
 //  Pass all the RestaurantController test cases.
 //  Make modifications to the tests if necessary.
 //  Test RestaurantController by mocking RestaurantService.
@@ -71,7 +71,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @ActiveProfiles("test")
 public class RestaurantControllerTest {
 
-  //FIXME: REVIEW the api names
+  //: REVIEW the api names
   private static final String RESTAURANT_API_URI = RESTAURANT_API_ENDPOINT + RESTAURANTS_API;
   private static final String MENU_API_URI = RESTAURANT_API_ENDPOINT + MENU_API;
   private static final String CART_API_URI = RESTAURANT_API_ENDPOINT + CART_API;

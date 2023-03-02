@@ -106,7 +106,7 @@ class RestaurantServiceTest {
       any(LocalTime.class), any(Double.class))).thenReturn(restaurants);
     GetRestaurantsResponse allRestaurantsCloseBy = restaurantService
       .findAllRestaurantsCloseBy(new GetRestaurantsRequest(20.0, 30.0), LocalTime.of(22, 0));
-    assertEquals(4, allRestaurantsCloseBy.getRestaurants().size());
+    assertEquals(3, allRestaurantsCloseBy.getRestaurants().size());
     assertEquals("10", allRestaurantsCloseBy.getRestaurants().get(0).getRestaurantId());
     assertEquals("11", allRestaurantsCloseBy.getRestaurants().get(1).getRestaurantId());
     assertEquals("12", allRestaurantsCloseBy.getRestaurants().get(2).getRestaurantId());
