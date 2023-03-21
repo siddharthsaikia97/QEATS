@@ -12,16 +12,16 @@ import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+// import java.util.ArrayList;
+// import java.util.HashMap;
+// import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+// import java.util.Map;
+// import java.util.Set;
+// import java.util.concurrent.ExecutionException;
+// import java.util.concurrent.Future;
+// import java.util.logging.LogManager;
+// import java.util.logging.Logger;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +64,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         GetRestaurantsResponse getRestaurantResponse = new GetRestaurantsResponse(restaurants);
         
         //log.info(getRestaurantResponse);
-        System.out.println(getRestaurantResponse);
+        //System.out.println(getRestaurantResponse);
 
      return getRestaurantResponse;
   }

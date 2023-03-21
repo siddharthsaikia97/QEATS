@@ -10,16 +10,20 @@ import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.services.RestaurantService;
 import java.time.LocalTime;
-import javax.validation.Valid;
-import lombok.extern.log4j.Log4j2;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import com.crio.qeats.dto.Restaurant;
+//import javax.validation.Valid;
+//import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+//import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+// import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 // : CRIO_TASK_MODULE_RESTAURANTSAPI
@@ -27,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 // Remember, annotations have various "targets". They can be class level, method level or others.
 
 @RestController
-@Log4j2
+//@Log4j2
 @RequestMapping(RestaurantController.RESTAURANT_API_ENDPOINT)
 public class RestaurantController {
 
@@ -57,12 +61,40 @@ public class RestaurantController {
         if (getRestaurantsRequest.getLatitude() != null && getRestaurantsRequest.getLongitude() != null
         && getRestaurantsRequest.getLatitude() >= -90 && getRestaurantsRequest.getLatitude() <= 90
         && getRestaurantsRequest.getLongitude() >= -180 && getRestaurantsRequest.getLongitude() <= 180) {
+          //Original code
           getRestaurantsResponse = restaurantService
             .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
-        //log.info("getRestaurants returned {}", getRestaurantsResponse);
-        System.out.println("getRestaurants returned {}"+ getRestaurantsResponse);
+
+          //Limiting count of restaurants in restaurant response
+          // GetRestaurantsResponse getRestaurantsResponseDebug;
+          // getRestaurantsResponseDebug = new GetRestaurantsResponse
+          //     (getRestaurantsResponse.getRestaurants().stream().limit(7).collect(Collectors.toList()));
+          // System.out.println("Size of original list : " + getRestaurantsResponse.getRestaurants().size());
+          // System.out.println("Size of debug list : " + getRestaurantsResponseDebug.getRestaurants().size());
+          // System.out.println("Restaurant after limiting count: " + getRestaurantsResponseDebug.getRestaurants());
+          
+          //Returning empty list
+          // GetRestaurantsResponse getRestaurantsResponseEmpty
+          //   = new GetRestaurantsResponse(new ArrayList<>());
+
+
+          //Logger code
+          //log.info("getRestaurants returned {}", getRestaurantsResponse);
+          System.out.println("getRestaurants returned {}"+ getRestaurantsResponse);
+
+          //Checking to see if restaurant lst is not empty and name does not contain special character "é"
+          if (getRestaurantsResponse != null && !getRestaurantsResponse.getRestaurants().isEmpty()) {
+            List<Restaurant> restaurants = getRestaurantsResponse.getRestaurants();
+            for (int i=0; i<restaurants.size(); i++) {
+              restaurants.get(i).setName(restaurants.get(i).getName().replace("é", "?"));
+            }
+            getRestaurantsResponse.setRestaurants(restaurants);
+          }
+
+          //retrun ResponseEntity.status(HttpStatus.OK).body(getRestaurantResponse)
           return ResponseEntity.ok().body(getRestaurantsResponse);
         }
+        
         else {
           return ResponseEntity.badRequest().body(null);
         }

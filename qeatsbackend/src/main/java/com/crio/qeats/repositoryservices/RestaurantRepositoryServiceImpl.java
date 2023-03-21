@@ -6,36 +6,36 @@
 
 package com.crio.qeats.repositoryservices;
 
-import ch.hsr.geohash.GeoHash;
+// import ch.hsr.geohash.GeoHash;
 import com.crio.qeats.dto.Restaurant;
-import com.crio.qeats.globals.GlobalConstants;
+// import com.crio.qeats.globals.GlobalConstants;
 import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.repositories.RestaurantRepository;
-import com.crio.qeats.utils.GeoLocation;
+// import com.crio.qeats.utils.GeoLocation;
 import com.crio.qeats.utils.GeoUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+// import com.fasterxml.jackson.core.JsonProcessingException;
+// import com.fasterxml.jackson.core.type.TypeReference;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
+// import java.util.Arrays;
+// import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.Future;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+// import java.util.Optional;
+// import java.util.Set;
+// import java.util.concurrent.Future;
+// import java.util.regex.Pattern;
+// import java.util.stream.Collectors;
 import javax.inject.Provider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.scheduling.annotation.AsyncResult;
+// import org.springframework.data.mongodb.core.MongoTemplate;
+// import org.springframework.data.mongodb.core.query.Criteria;
+// import org.springframework.data.mongodb.core.query.Query;
+// import org.springframework.data.mongodb.repository.MongoRepository;
+// import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 @Primary
@@ -45,8 +45,8 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
 
 
 
-  @Autowired
-  private MongoTemplate mongoTemplate;
+  // @Autowired
+  // private MongoTemplate mongoTemplate;
 
   @Autowired
   private Provider<ModelMapper> modelMapperProvider;
@@ -58,7 +58,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   private boolean isOpenNow(LocalTime time, RestaurantEntity res) {
     LocalTime openingTime = LocalTime.parse(res.getOpensAt());
     LocalTime closingTime = LocalTime.parse(res.getClosesAt());
-
+    //System.out.println(time.isAfter(openingTime) && time.isBefore(closingTime));
     return time.isAfter(openingTime) && time.isBefore(closingTime);
   }
 
@@ -74,12 +74,21 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     List<Restaurant> restaurants = new ArrayList<>();
 
     List<RestaurantEntity> restaurantList = restaurantRepository.findAll();
+       // System.out.println(restaurantList);
+       if (restaurantList == null) {
+          System.out.println("Repository returning empty list");
+       }
+       else {
 
-    for(RestaurantEntity restaurant : restaurantList) {
-      if(isRestaurantCloseByAndOpen(restaurant, currentTime, latitude, longitude, servingRadiusInKms)) {
-        restaurants.add(modelMapper.map(restaurant, Restaurant.class));
-      }
-    }
+       
+        for(RestaurantEntity restaurant : restaurantList) {
+          if(isRestaurantCloseByAndOpen(restaurant, currentTime, latitude, longitude, servingRadiusInKms)) {
+            restaurants.add(modelMapper.map(restaurant, Restaurant.class));
+          } 
+          
+    } 
+    //System.out.println("Restaurant list is: " + restaurants); 
+  }
 
     //List<Restaurant> restaurants = restaurantList.stream().filter()
 
@@ -87,7 +96,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
       //CHECKSTYLE:OFF
       //CHECKSTYLE:ON
 
-
+    //System.out.println(restaurants);
     return restaurants;
   }
 
@@ -110,6 +119,9 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   private boolean isRestaurantCloseByAndOpen(RestaurantEntity restaurantEntity,
       LocalTime currentTime, Double latitude, Double longitude, Double servingRadiusInKms) {
     if (isOpenNow(currentTime, restaurantEntity)) {
+      // System.out.println(GeoUtils.findDistanceInKm(latitude, longitude,
+      // restaurantEntity.getLatitude(), restaurantEntity.getLongitude()));
+      
       return GeoUtils.findDistanceInKm(latitude, longitude,
           restaurantEntity.getLatitude(), restaurantEntity.getLongitude())
           < servingRadiusInKms;

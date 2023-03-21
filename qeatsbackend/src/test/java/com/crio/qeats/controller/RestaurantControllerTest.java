@@ -16,34 +16,34 @@ import static com.crio.qeats.controller.RestaurantController.POST_ORDER_API;
 import static com.crio.qeats.controller.RestaurantController.RESTAURANTS_API;
 import static com.crio.qeats.controller.RestaurantController.RESTAURANT_API_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+// import static org.junit.jupiter.api.Assertions.assertNotNull;
+// import static org.mockito.ArgumentMatchers.any;
+// import static org.mockito.Mockito.doThrow;
+// import static org.mockito.Mockito.times;
+// import static org.mockito.Mockito.verify;
+// import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+// import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.crio.qeats.QEatsApplication;
-import com.crio.qeats.exchanges.GetRestaurantsRequest;
-import com.crio.qeats.exchanges.GetRestaurantsResponse;
+// import com.crio.qeats.exchanges.GetRestaurantsRequest;
+// import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.services.RestaurantService;
-import com.crio.qeats.utils.FixtureHelpers;
-import com.fasterxml.jackson.core.type.TypeReference;
+// import com.crio.qeats.utils.FixtureHelpers;
+// import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+//import java.io.IOException;
 import java.net.URI;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.NoSuchElementException;
+// import java.time.LocalTime;
+// import java.util.List;
+// import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
+//import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -56,7 +56,8 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+//import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -113,7 +114,7 @@ public class RestaurantControllerTest {
     assertEquals(RESTAURANT_API_URI + "?latitude=91&longitude=20", uri.toString());
 
     MockHttpServletResponse response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+        MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
@@ -127,11 +128,13 @@ public class RestaurantControllerTest {
     assertEquals(RESTAURANT_API_URI + "?latitude=-91&longitude=20", uri.toString());
 
     response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+      MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
   }
+
+
 
   //-90 TO 90 latitude
   @Test
@@ -146,7 +149,7 @@ public class RestaurantControllerTest {
 
 
     MockHttpServletResponse response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+      MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
@@ -161,7 +164,7 @@ public class RestaurantControllerTest {
 
     // calling api with invalid longitude
     response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+      MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
@@ -180,7 +183,7 @@ public class RestaurantControllerTest {
 
 
     MockHttpServletResponse response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+      MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
@@ -199,7 +202,7 @@ public class RestaurantControllerTest {
 
 
     MockHttpServletResponse response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+      MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
@@ -216,7 +219,7 @@ public class RestaurantControllerTest {
 
     // calling api without latitude and longitude
     MockHttpServletResponse response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+      MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
@@ -233,7 +236,7 @@ public class RestaurantControllerTest {
     assertEquals(RESTAURANT_API_URI + "?latitude=20.21", uri.toString());
 
     MockHttpServletResponse response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+      MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
@@ -250,7 +253,7 @@ public class RestaurantControllerTest {
     assertEquals(RESTAURANT_API_URI + "?longitude=30.31", uri.toString());
 
     MockHttpServletResponse response = mvc.perform(
-        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+      MockMvcRequestBuilders.get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
