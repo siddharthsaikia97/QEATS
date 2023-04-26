@@ -42,33 +42,43 @@ public class RestaurantServiceImpl implements RestaurantService {
   public GetRestaurantsResponse findAllRestaurantsCloseBy(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
 
-        //1. If size of request is 2 or 3
-        //2. Find out if peak hour or off peak hour
-        //3. Find the area
-        List<Restaurant> restaurants;
-        int h = currentTime.getHour();
-        int m = currentTime.getMinute();
+      List<Restaurant> restaurants;
+      int h = currentTime.getHour();
+      int m = currentTime.getMinute();
+      
+      //Service layer start time
+      long startTimeInMillis = System.currentTimeMillis();
 
-        if ((h >= 8 && h <= 9) || (h == 10 && m == 0) || (h == 13) || (h == 14 && m == 0) 
-          || (h >= 19 && h <= 20) || (h == 21 && m == 0)) {
-            restaurants = restaurantRepositoryService.findAllRestaurantsCloseBy(
-              getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(), 
-              currentTime, peakHoursServingRadiusInKms);
-        }
-        else {
+      //Calling repository service based on peak hours or normal hours
+      if ((h >= 8 && h <= 9) || (h == 10 && m == 0) || (h == 13) || (h == 14 && m == 0) 
+        || (h >= 19 && h <= 20) || (h == 21 && m == 0)) {
           restaurants = restaurantRepositoryService.findAllRestaurantsCloseBy(
             getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(), 
-            currentTime, normalHoursServingRadiusInKms);
-        }
+            currentTime, peakHoursServingRadiusInKms);
 
-        GetRestaurantsResponse getRestaurantResponse = new GetRestaurantsResponse(restaurants);
-        
-        //log.info(getRestaurantResponse);
-        //System.out.println(getRestaurantResponse);
+          System.out.println("No of restaurants returned by repository service layer : " + restaurants.size());
+      }
+      else {
+        restaurants = restaurantRepositoryService.findAllRestaurantsCloseBy(
+          getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(), 
+          currentTime, normalHoursServingRadiusInKms);
 
-     return getRestaurantResponse;
+          System.out.println("No of restaurants returned by repository service layer : " + restaurants.size());
+      }
+
+      //Service layer end time
+      long endTimeInMillis = System.currentTimeMillis();
+
+      System.out.println("Repository layer took :" + (endTimeInMillis - startTimeInMillis)); 
+
+      GetRestaurantsResponse getRestaurantResponse = new GetRestaurantsResponse(restaurants);
+      
+      /* Logger code
+        * log.info(getRestaurantResponse);
+        */
+      System.out.println(getRestaurantResponse);
+
+        return getRestaurantResponse;
   }
-
-
 }
 

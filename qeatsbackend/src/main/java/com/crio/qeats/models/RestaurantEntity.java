@@ -26,6 +26,70 @@ public class RestaurantEntity {
   @NotNull
   private String restaurantId;
 
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getRestaurantId() {
+    return restaurantId;
+  }
+
+  public void setRestaurantId(String restaurantId) {
+    this.restaurantId = restaurantId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
+  public void setLatitude(Double latitude) {
+    this.latitude = latitude;
+  }
+
+  public void setLongitude(Double longitude) {
+    this.longitude = longitude;
+  }
+
+  public void setOpensAt(String opensAt) {
+    this.opensAt = opensAt;
+  }
+
+  public void setClosesAt(String closesAt) {
+    this.closesAt = closesAt;
+  }
+
+  public List<String> getAttributes() {
+    return attributes;
+  }
+
+  public void setAttributes(List<String> attributes) {
+    this.attributes = attributes;
+  }
+
   @NotNull
   private String name;
 

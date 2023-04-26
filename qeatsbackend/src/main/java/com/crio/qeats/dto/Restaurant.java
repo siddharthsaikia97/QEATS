@@ -62,14 +62,67 @@ public class Restaurant {
     @NonNull
     private String opensAt;
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getOpensAt() {
+        return opensAt;
+    }
+
+    public void setOpensAt(String opensAt) {
+        this.opensAt = opensAt;
+    }
+
+    public String getClosesAt() {
+        return closesAt;
+    }
+
+    public void setClosesAt(String closesAt) {
+        this.closesAt = closesAt;
+    }
+
+    public String[] getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(String[] attributes) {
+        this.attributes = attributes;
+    }
+
     @NonNull
     private String closesAt;
 
     @NonNull
     private String[] attributes;
 
-    public Object getRestaurantId() {
+
+    public String getRestaurantId() {
         return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public void setLatitude(double latitude) {

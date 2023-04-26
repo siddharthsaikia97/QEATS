@@ -26,10 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-// : CRIO_TASK_MODULE_RESTAURANTSAPI
-// Implement Controller using Spring annotations.
-// Remember, annotations have various "targets". They can be class level, method level or others.
-
 @RestController
 //@Log4j2
 @RequestMapping(RestaurantController.RESTAURANT_API_ENDPOINT)
@@ -53,46 +49,64 @@ public class RestaurantController {
   public ResponseEntity<GetRestaurantsResponse> getRestaurants(
        GetRestaurantsRequest getRestaurantsRequest) {
 
-       //log.info("getRestaurants called with {}", getRestaurantsRequest);
-       System.out.println("getRestaurants called with {}"+ getRestaurantsRequest);
+        /*
+         log.info("getRestaurants called with {}", getRestaurantsRequest);
+        */
+        System.out.println("getRestaurants called with {}"+ getRestaurantsRequest);
         GetRestaurantsResponse getRestaurantsResponse;
 
         //CHECKSTYLE:OFF
         if (getRestaurantsRequest.getLatitude() != null && getRestaurantsRequest.getLongitude() != null
         && getRestaurantsRequest.getLatitude() >= -90 && getRestaurantsRequest.getLatitude() <= 90
         && getRestaurantsRequest.getLongitude() >= -180 && getRestaurantsRequest.getLongitude() <= 180) {
-          //Original code
+          
+          //Service layer start time
+          long startTimeInMillis = System.currentTimeMillis();
+
+          //Call to service layer to fetch restaurants
           getRestaurantsResponse = restaurantService
             .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
 
-          //Limiting count of restaurants in restaurant response
-          // GetRestaurantsResponse getRestaurantsResponseDebug;
-          // getRestaurantsResponseDebug = new GetRestaurantsResponse
-          //     (getRestaurantsResponse.getRestaurants().stream().limit(7).collect(Collectors.toList()));
-          // System.out.println("Size of original list : " + getRestaurantsResponse.getRestaurants().size());
-          // System.out.println("Size of debug list : " + getRestaurantsResponseDebug.getRestaurants().size());
-          // System.out.println("Restaurant after limiting count: " + getRestaurantsResponseDebug.getRestaurants());
+          //Service layer end time
+          long endTimeInMillis = System.currentTimeMillis();
+
+          System.out.println("Service layer took :" + (endTimeInMillis - startTimeInMillis));   
+
+          /*Limiting count of restaurants in restaurant response
+            GetRestaurantsResponse getRestaurantsResponseDebug;
+            getRestaurantsResponseDebug = new GetRestaurantsResponse
+                (getRestaurantsResponse.getRestaurants().stream().limit(7).collect(Collectors.toList()));
+            System.out.println("Size of original list : " + getRestaurantsResponse.getRestaurants().size());
+            System.out.println("Size of debug list : " + getRestaurantsResponseDebug.getRestaurants().size());
+            System.out.println("Restaurant after limiting count: " + getRestaurantsResponseDebug.getRestaurants());
+          */
+
+          /*Logger code
+            log.info("getRestaurants returned {}", getRestaurantsResponse);
+          */
           
-          //Returning empty list
-          // GetRestaurantsResponse getRestaurantsResponseEmpty
-          //   = new GetRestaurantsResponse(new ArrayList<>());
+          /*Debugging statment to check no of restaurants returned by service layer 
+            System.out.println("No of restaurants returned by service layer : " 
+              + getRestaurantsResponse.getRestaurants().size());
+          */
 
-
-          //Logger code
-          //log.info("getRestaurants returned {}", getRestaurantsResponse);
           System.out.println("getRestaurants returned {}"+ getRestaurantsResponse);
 
           //Checking to see if restaurant lst is not empty and name does not contain special character "é"
           if (getRestaurantsResponse != null && !getRestaurantsResponse.getRestaurants().isEmpty()) {
             List<Restaurant> restaurants = getRestaurantsResponse.getRestaurants();
+            
             for (int i=0; i<restaurants.size(); i++) {
               restaurants.get(i).setName(restaurants.get(i).getName().replace("é", "?"));
             }
             getRestaurantsResponse.setRestaurants(restaurants);
           }
-
-          //retrun ResponseEntity.status(HttpStatus.OK).body(getRestaurantResponse)
+          
+          System.out.println("No of restaurants returned to channel : " + getRestaurantsResponse.getRestaurants().size());
           return ResponseEntity.ok().body(getRestaurantsResponse);
+          /*Alternate way to write return statement
+           * retrun ResponseEntity.status(HttpStatus.OK).body(getRestaurantResponse)
+           */
         }
         
         else {
